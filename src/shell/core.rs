@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+//use std::collections::HashMap;
 use std::io::{self, Write};
 use std::path::PathBuf;
 use std::process::Command;
@@ -11,7 +11,7 @@ use crate::shell::builtins;
 pub struct Shell {
     pub cwd: PathBuf,
     pub last_status: i32,
-    pub env_vars: HashMap<String, String>,
+    //pub env_vars: HashMap<String, String>,
     pub history: Vec<String>,
 }
 
@@ -20,7 +20,7 @@ impl Shell {
         Self {
             cwd: std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/")),
             last_status: 0,
-            env_vars: std::env::vars().collect(),
+            //env_vars: std::env::vars().collect(),
             history: Vec::new(),
         }
     }

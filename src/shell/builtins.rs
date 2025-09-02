@@ -2,10 +2,18 @@ use crate::shell::core::Shell;
 use std::path::PathBuf;
 use colored::*;
 
+
 pub fn handle_builtin(shell: &mut Shell, cmd: &str, args: &[&str]) -> bool {
     match cmd {
         "cd" => {
             change_dir(shell, args.get(0).copied());
+            true
+        }
+        "exit" => {
+            std::process::exit(0);
+        }
+        "pwd" => {
+            println!("{}", shell.cwd.display());
             true
         }
         _ => false,
