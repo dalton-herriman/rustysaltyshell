@@ -31,6 +31,19 @@ impl Shell {
             ":>".cyan()
         )
     }
+
+    fn change_dir(&mut self, target: Option<&str>) {
+        let new_path = match target {
+            Some(path) => PathBuf::from(path),
+            None => dirs::home_dir().unwrap_or_else(|| PathBuf::from("/")),
+        };
+
+        if let Err(e) = std::env::set_current_dir(&new_path) {
+            eprintln!("{} {}", "cd:".red(), e);
+        } else {
+            self.cwd = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("/"));
+        }
+    }
 }
 
 fn main() {
@@ -61,6 +74,12 @@ fn main() {
         let cmd = parts.next().unwrap();
         let args: Vec<&str> = parts.collect();
 
+        // Built-in command: cd
+        if cmd == "cd" {
+            shell.change_dir(args.get(0).copied());
+            continue;
+        }
+        
         let status = Command::new(cmd)
             .args(&args)
             .status();
